@@ -33,44 +33,49 @@ public class CybufParse
             scanner.skipWhitespace();
             if(scanner.getCurrent() == '}')
             {
+                scanner.next();
                 return map;
+            }
+            else if(scanner.getCurrent() == (char)-1)
+            {
+                throw new CybufException("Unclosing CybufObject");
             }
 
             String key = "";
             scanner.nextKey();
-            if(scanner.token() == CybufToken.IDENTIFIER)
+            switch(scanner.token())
             {
-                key = scanner.stringValue();
-                key = key.trim();
-                scanner.nextValue();
+                case IDENTIFIER:
+                    key = scanner.stringValue();
+                    key = key.trim();
+                    scanner.nextValue();
+                    break;
+                case ERROR:
+                    throw new CybufException("Except ':'");
             }
-            else if(scanner.token() == CybufToken.ERROR)
-            {
-                throw new CybufException("Except ':'");
-            }
+
 
             Object value;
             scanner.nextValue();
-            if(scanner.token() == CybufToken.LBRACE || scanner.token() == CybufToken.LBRACKET)
+            switch(scanner.token())
             {
-                value = parse();
+                case LBRACE:
+                case LBRACKET:
+                    value = parse();
+                    break;
+                case LITERAL_INT:
+                    value = scanner.integerValue();
+                    break;
+                case LITERAL_FLOAT:
+                    value = scanner.doubleValue();
+                    break;
+                case LITERAL_STRING:
+                    value = scanner.stringValue();
+                    break;
+                default:
+                    throw new CybufException("Undefined value type " + scanner.token());
             }
-            else if(scanner.token() == CybufToken.LITERAL_INT)
-            {
-                value = scanner.integerValue();
-            }
-            else if(scanner.token() == CybufToken.LITERAL_FLOAT)
-            {
-                value = scanner.doubleValue();
-            }
-            else if(scanner.token() == CybufToken.LITERAL_STRING)
-            {
-                value = scanner.stringValue();
-            }
-            else
-            {
-                throw new CybufException("Undefined value type " + scanner.token());
-            }
+
 
             map.put(key,value);
         }
@@ -78,7 +83,42 @@ public class CybufParse
 
     public Object parseArray(List<Object> list)
     {
+        for(;;)
+        {
+            scanner.skipWhitespace();
+            if(scanner.getCurrent() == ']')
+            {
+                scanner.next();
+                return list;
+            }
+            else if(scanner.getCurrent() == (char)-1)
+            {
+                throw new CybufException(("Unclosing CybufArray"));
+            }
 
-        return null;
+            Object value;
+            scanner.nextValue();
+            switch(scanner.token())
+            {
+                case LBRACE:
+                case LBRACKET:
+                    value = parse();
+                    break;
+                case LITERAL_FLOAT:
+                    value = scanner.doubleValue();
+                    break;
+                case LITERAL_INT:
+                    value = scanner.integerValue();
+                    break;
+                case LITERAL_STRING:
+                    value = scanner.stringValue();
+                    break;
+                case RBRACE:
+                    throw new CybufException("Unclosing CybufArray");
+                default:
+                    throw new CybufException("Undefined value type " + scanner.token());
+            }
+            list.add(value);
+        }
     }
 }

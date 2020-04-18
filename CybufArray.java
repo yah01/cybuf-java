@@ -154,4 +154,10 @@ public class CybufArray implements List<Object>
     {
         return this.list.subList(fromIndex, toIndex);
     }
+
+    @Override
+    public String toString()
+    {
+        return this.list.toString();
+    }
 }

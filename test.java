@@ -8,12 +8,30 @@ public class test
                 "obj:{\n\t\t" +
                 "name:\"bqx\"\n\t\t" +
                 "age:21\n\t\t" +
-                "}\n" +
+                "}\n\t" +
+                "skill:[\n\t\t" +
+                "\"C\"\n\t\t" +
+                "\"java\"\n\t\t" +
+                "]\n" +
                 "}");
-        System.out.println(text);
+        String text1 = new String("[\n" +
+                "\t{\n" +
+                "\t\tname:\"tcg\"\n" +
+                "\t\tage:21\n" +
+                "\t}\n" +
+                "\t{\n" +
+                "\t\tname:\"bqx\"\n" +
+                "\t\tage:100\n" +
+                "\t}\n" +
+                "\t\"hahah\"\n" +
+                "]");
+
+        System.out.println(text1);
 
         CybufObject object = Cybuf.parseObject(text);
 
-        System.out.println(object);
+        CybufArray array = Cybuf.parseArray(text1);
+
+        System.out.println(array);
     }
 }

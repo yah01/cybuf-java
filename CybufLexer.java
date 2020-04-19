@@ -18,7 +18,7 @@ public interface CybufLexer
 
     void scanTrue();
 
-    void scanFlase();
+    void scanFalse();
 
     void skipWhitespace();
 

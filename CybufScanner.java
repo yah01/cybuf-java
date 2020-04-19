@@ -97,7 +97,7 @@ public class CybufScanner implements CybufLexer
             }
             if(nowChar == 'f')
             {
-                scanFlase();
+                scanFalse();
                 return;
             }
             switch(nowChar)
@@ -177,7 +177,7 @@ public class CybufScanner implements CybufLexer
     }
 
     @Override
-    public void scanFlase()
+    public void scanFalse()
     {
         for(int i=0;i<5;++i)
         {

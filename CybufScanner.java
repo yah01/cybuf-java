@@ -8,6 +8,9 @@ public class CybufScanner implements CybufLexer
     private final String      text;
     private CybufToken        token;
 
+    private final static String TRUE  = "true";
+    private final static String FALSE = "false";
+
     public CybufScanner(String text)
     {
         this.text = text;
@@ -87,6 +90,16 @@ public class CybufScanner implements CybufLexer
                 scanNumber();
                 return ;
             }
+            if(nowChar == 't')
+            {
+                scanTrue();
+                return ;
+            }
+            if(nowChar == 'f')
+            {
+                scanFlase();
+                return;
+            }
             switch(nowChar)
             {
                 case '(':
@@ -136,6 +149,56 @@ public class CybufScanner implements CybufLexer
     public char getCurrent()
     {
         return nowChar;
+    }
+
+    @Override
+    public void scanTrue()
+    {
+        for(int i=0;i<4;++i)
+        {
+            if(nowChar == TRUE.charAt(i))
+            {
+                next();
+            }
+            else
+            {
+                throw new CybufException("error parse true");
+            }
+        }
+        if (nowChar == ' ' || nowChar == ',' || nowChar == '}' || nowChar == ']' || nowChar == '\n' || nowChar == '\r'
+                || nowChar == '\t' || nowChar == '\f' || nowChar == '\b' )
+        {
+            token = CybufToken.TRUE;
+        }
+        else
+        {
+            throw new CybufException("scan true error");
+        }
+    }
+
+    @Override
+    public void scanFlase()
+    {
+        for(int i=0;i<5;++i)
+        {
+            if(nowChar == FALSE.charAt(i))
+            {
+                next();
+            }
+            else
+            {
+                throw new CybufException("error parse false");
+            }
+        }
+        if (nowChar == ' ' || nowChar == ',' || nowChar == '}' || nowChar == ']' || nowChar == '\n' || nowChar == '\r'
+                || nowChar == '\t' || nowChar == '\f' || nowChar == '\b' )
+        {
+            token = CybufToken.FALSE;
+        }
+        else
+        {
+            throw new CybufException("scan false error");
+        }
     }
 
     @Override
@@ -220,13 +283,38 @@ public class CybufScanner implements CybufLexer
     @Override
     public Integer integerValue()
     {
+        if(token != CybufToken.LITERAL_INT)
+        {
+            throw new CybufException("Except : " + CybufToken.LITERAL_INT);
+        }
         return Integer.parseInt(stringValue());
     }
 
     @Override
     public Double doubleValue()
     {
+        if(token != CybufToken.LITERAL_FLOAT)
+        {
+            throw new CybufException("Except : " + CybufToken.LITERAL_FLOAT);
+        }
         return Double.parseDouble(stringValue());
+    }
+
+    @Override
+    public Boolean booleanValue()
+    {
+        if(token == CybufToken.FALSE)
+        {
+            return Boolean.FALSE;
+        }
+        else if(token == CybufToken.TRUE)
+        {
+            return Boolean.TRUE;
+        }
+        else
+        {
+            throw new CybufException("Except : " + CybufToken.FALSE + " or " + CybufToken.TRUE);
+        }
     }
 
     @Override

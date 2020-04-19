@@ -24,5 +24,9 @@ public enum CybufToken
 
     IDENTIFIER,
 
-    ERROR
+    ERROR,
+
+    TRUE,
+
+    FALSE
 }

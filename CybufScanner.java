@@ -165,7 +165,7 @@ public class CybufScanner implements CybufLexer
                 throw new CybufException("error parse true");
             }
         }
-        if (nowChar == ' ' || nowChar == ',' || nowChar == '}' || nowChar == ']' || nowChar == '\n' || nowChar == '\r'
+        if (nowChar == ' ' || nowChar == '}' || nowChar == ']' || nowChar == '\n' || nowChar == '\r'
                 || nowChar == '\t' || nowChar == '\f' || nowChar == '\b' )
         {
             token = CybufToken.TRUE;
@@ -190,7 +190,7 @@ public class CybufScanner implements CybufLexer
                 throw new CybufException("error parse false");
             }
         }
-        if (nowChar == ' ' || nowChar == ',' || nowChar == '}' || nowChar == ']' || nowChar == '\n' || nowChar == '\r'
+        if (nowChar == ' ' || nowChar == '}' || nowChar == ']' || nowChar == '\n' || nowChar == '\r'
                 || nowChar == '\t' || nowChar == '\f' || nowChar == '\b' )
         {
             token = CybufToken.FALSE;

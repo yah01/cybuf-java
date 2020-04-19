@@ -13,7 +13,8 @@ public class test
                 "\"C\"\n\t\t" +
                 "\"java\"\n\t\t" +
                 "]\n" +
-                "\tok:true\n" +
+                "\tok: true\n" +
+                "\tnotok:false\n" +
                 "}");
         String text1 = new String("[\n" +
                 "\t{\n" +

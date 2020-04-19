@@ -16,6 +16,10 @@ public interface CybufLexer
 
     void scanString();
 
+    void scanTrue();
+
+    void scanFalse();
+
     void skipWhitespace();
 
     String stringValue();
@@ -23,5 +27,7 @@ public interface CybufLexer
     Integer integerValue();
 
     Double doubleValue();
+
+    Boolean booleanValue();
 
 }

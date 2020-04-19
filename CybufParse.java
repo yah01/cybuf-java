@@ -72,6 +72,10 @@ public class CybufParse
                 case LITERAL_STRING:
                     value = scanner.stringValue();
                     break;
+                case TRUE:
+                case FALSE:
+                    value = scanner.booleanValue();
+                    break;
                 default:
                     throw new CybufException("Undefined value type " + scanner.token());
             }

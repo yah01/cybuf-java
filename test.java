@@ -13,6 +13,8 @@ public class test
                 "\"C\"\n\t\t" +
                 "\"java\"\n\t\t" +
                 "]\n" +
+                "\tok: true\n" +
+                "\tnotok:false\n" +
                 "}");
         String text1 = new String("[\n" +
                 "\t{\n" +
@@ -33,5 +35,9 @@ public class test
         CybufArray array = Cybuf.parseArray(text1);
 
         System.out.println(array);
+
+        System.out.println(text);
+
+        System.out.println(object);
     }
 }

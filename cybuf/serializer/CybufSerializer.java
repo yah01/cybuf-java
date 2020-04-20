@@ -2,6 +2,7 @@ package cybuf.serializer;
 
 import cybuf.util.JavaBeanSerializerCreator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,11 +15,29 @@ public class CybufSerializer
     {
         writer = new SerializerWriter();
         serializers = new HashMap<>();
+        initialSerializers();
     }
 
-    public void write(Object object)
+    private void initialSerializers()
     {
-        final ObjectSerializer os = getObjectSerializer(object.getClass());
+        serializers.put(String.class.getName(),StringSerializer.instance);
+        serializers.put(Integer.class.getName(),IntegerSerializer.instance);
+        serializers.put(int.class.getName(),IntegerSerializer.instance);
+        serializers.put("null",NullSerializer.instance);
+    }
+
+    public void write(Object object) throws InvocationTargetException, IllegalAccessException
+    {
+        final ObjectSerializer os;
+        if(object == null)
+        {
+            os = serializers.get("null");
+        }
+        else
+        {
+            os = getObjectSerializer(object.getClass());
+        }
+
 
         os.write(object,this);
     }
@@ -40,6 +59,39 @@ public class CybufSerializer
     public String toString()
     {
         return writer.toString();
+    }
+
+    public void writeChar(char c)
+    {
+        writer.writeChar(c);
+    }
+
+    public void writeString(String value)
+    {
+        writer.writeString(value);
+    }
+
+    public void writeFieldName(String fieldName)
+    {
+        writer.writeFieldName(fieldName);
+    }
+    public void writeNull()
+    {
+        writer.writeNull();
+    }
+    public void increaseTab()
+    {
+        writer.increaseTab();
+    }
+
+    public void decreaseTab()
+    {
+        writer.decreaseTab();
+    }
+
+    public void writeln()
+    {
+        writer.writeln();
     }
 
 }

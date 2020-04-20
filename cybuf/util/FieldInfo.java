@@ -9,14 +9,16 @@ public class FieldInfo
     private final String    fieldName;
     private final Field     field;
     private final Method    method;
-    private final Class<?>  clazz;
+    private final Class<?>  declaringClass;
+    private final Class<?>  fieldClass;
 
-    public FieldInfo(String fieldName,Field field,Method method,Class<?> clazz)
+    public FieldInfo(String fieldName,Field field,Method method,Class<?> declaringClass)
     {
-        this.fieldName  = fieldName;
-        this.field      = field;
-        this.method     = method;
-        this.clazz      = clazz;
+        this.fieldName           = fieldName;
+        this.field               = field;
+        this.method              = method;
+        this.declaringClass      = declaringClass;
+        this.fieldClass          = field.getClass();
     }
 
     public Object getObjectFieldValue(Object obj) throws InvocationTargetException, IllegalAccessException
@@ -24,7 +26,7 @@ public class FieldInfo
         return method.invoke(obj);
     }
 
-    public Object getObjectFieldName(Object obj)
+    public String getFieldName()
     {
         return fieldName;
     }

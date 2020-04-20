@@ -1,11 +1,25 @@
 package cybuf;
 import cybuf.parse.CybufParse;
+import cybuf.serializer.CybufSerializer;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class Cybuf
 {
     public static String toCybufString(Object object)
     {
-        return "";
+        CybufSerializer serializer = new CybufSerializer();
+        try
+        {
+            serializer.write(object);
+            return serializer.toString();
+        } catch (InvocationTargetException e)
+        {
+            throw new CybufException(e.getMessage());
+        } catch (IllegalAccessException e)
+        {
+            throw new CybufException(e.getMessage());
+        }
     }
 
     public static CybufObject parseObject(String text)

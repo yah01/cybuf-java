@@ -7,4 +7,12 @@ public class BeanInfo
     {
         this.fieldInfos = fieldInfos;
     }
+    public int length()
+    {
+        return fieldInfos.length;
+    }
+    public FieldInfo[] getFieldInfos()
+    {
+        return fieldInfos;
+    }
 }

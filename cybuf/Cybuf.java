@@ -1,3 +1,6 @@
+package cybuf;
+import cybuf.parse.CybufParse;
+
 public class Cybuf
 {
     public static String toCybufString(Object object)

@@ -1,3 +1,5 @@
+package cybuf.parse;
+
 public enum CybufToken
 {
     LPAREN,     // ("("),

@@ -1,3 +1,4 @@
+package cybuf;
 public class CybufException extends RuntimeException
 {
     public CybufException()

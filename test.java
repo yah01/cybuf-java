@@ -1,3 +1,4 @@
+import cybuf.*;
 public class test
 {
     public static void main(String[] args)

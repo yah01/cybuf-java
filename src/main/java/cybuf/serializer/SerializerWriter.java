@@ -54,12 +54,12 @@ public class SerializerWriter
     }
     public void writeNull()
     {
-        int newCount = count + 4;
+        int newCount = count + 3;
         if(newCount > buf.length)
         {
             expandCapacity(newCount);
         }
-        "null".getChars(0,4,buf,count);
+        "nil".getChars(0,3,buf,count);
         count = newCount;
     }
     public void writeln()
@@ -70,6 +70,19 @@ public class SerializerWriter
             writeChar('\t');
         }
     }
+    public void writeBaseObject(Object object)
+    {
+        String objectString = object.toString();
+        int len = objectString.length();
+        int newCount = count + len;
+        if(newCount > buf.length)
+        {
+            expandCapacity(newCount);
+        }
+        objectString.getChars(0,len,buf,count);
+        count = newCount;
+    }
+
     private void expandCapacity(int capacity)
     {
         int newCapacity = buf.length + (buf.length >> 1);

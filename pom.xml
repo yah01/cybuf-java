@@ -15,7 +15,7 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <!-- 不设置scope就是全局
-            <scope>test</scope>   -->
+            <scope>object</scope>   -->
         </dependency>
     </dependencies>
     

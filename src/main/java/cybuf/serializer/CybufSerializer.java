@@ -1,9 +1,11 @@
 package cybuf.serializer;
 
+import cybuf.CybufException;
 import cybuf.util.JavaBeanSerializerCreator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CybufSerializer
@@ -23,7 +25,14 @@ public class CybufSerializer
         serializers.put(String.class.getName(),StringSerializer.instance);
         serializers.put(Integer.class.getName(),IntegerSerializer.instance);
         serializers.put(int.class.getName(),IntegerSerializer.instance);
-        serializers.put("null",NullSerializer.instance);
+        serializers.put(Double.class.getName(),DoubleSerializer.instance);
+        serializers.put(double.class.getName(),DoubleSerializer.instance);
+        serializers.put(Boolean.class.getName(),BooleanSerializer.instance);
+        serializers.put(boolean.class.getName(),BooleanSerializer.instance);
+        serializers.put(Object[].class.getName(),ArraySerializer.instance);
+        serializers.put(List.class.getName(),ListSerializer.instance);
+        serializers.put(Map.class.getName(),MapSerializer.instance);
+        serializers.put("nil",NullSerializer.instance);
     }
 
     public void write(Object object) throws InvocationTargetException, IllegalAccessException
@@ -31,14 +40,24 @@ public class CybufSerializer
         final ObjectSerializer os;
         if(object == null)
         {
-            os = serializers.get("null");
+            os = serializers.get("nil");
+        }
+        else if(object.getClass().isArray())
+        {
+            os = serializers.get(Object[].class.getName());
+        }
+        else if(List.class.isAssignableFrom(object.getClass()))
+        {
+            os = serializers.get(List.class.getName());
+        }
+        else if(Map.class.isAssignableFrom(object.getClass()))
+        {
+            os = serializers.get(Map.class.getName());
         }
         else
         {
             os = getObjectSerializer(object.getClass());
         }
-
-
         os.write(object,this);
     }
 
@@ -60,7 +79,6 @@ public class CybufSerializer
     {
         return writer.toString();
     }
-
     public void writeChar(char c)
     {
         writer.writeChar(c);
@@ -93,5 +111,8 @@ public class CybufSerializer
     {
         writer.writeln();
     }
-
+    public void writeBaseObject(Object object)
+    {
+        writer.writeBaseObject(object);
+    }
 }

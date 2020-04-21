@@ -1,4 +1,4 @@
-package test;
+package object;
 
 import cybuf.*;
 public class test
@@ -42,13 +42,6 @@ public class test
 //        System.out.println(text);
 //
 //        System.out.println(object);
-        Person s = new Person();
-        s.setName("tcg");
-        Person t = new Person();
-        t.setName("bqx");
-        s.setPerson(t);
 
-        String name = Cybuf.toCybufString(s);
-        System.out.println(name);
     }
 }

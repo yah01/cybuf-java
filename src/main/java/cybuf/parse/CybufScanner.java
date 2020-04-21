@@ -1,3 +1,7 @@
+package cybuf.parse;
+
+import cybuf.CybufException;
+
 public class CybufScanner implements CybufLexer
 {
     private int               nowPos;
@@ -285,7 +289,7 @@ public class CybufScanner implements CybufLexer
     {
         if(token != CybufToken.LITERAL_INT)
         {
-            throw new CybufException("Except : " + CybufToken.LITERAL_INT);
+            throw new CybufException("Expect : " + CybufToken.LITERAL_INT);
         }
         return Integer.parseInt(stringValue());
     }
@@ -295,7 +299,7 @@ public class CybufScanner implements CybufLexer
     {
         if(token != CybufToken.LITERAL_FLOAT)
         {
-            throw new CybufException("Except : " + CybufToken.LITERAL_FLOAT);
+            throw new CybufException("Expect : " + CybufToken.LITERAL_FLOAT);
         }
         return Double.parseDouble(stringValue());
     }
@@ -313,7 +317,7 @@ public class CybufScanner implements CybufLexer
         }
         else
         {
-            throw new CybufException("Except : " + CybufToken.FALSE + " or " + CybufToken.TRUE);
+            throw new CybufException("Expect : " + CybufToken.FALSE + " or " + CybufToken.TRUE);
         }
     }
 

@@ -1,3 +1,5 @@
+package cybuf.parse;
+
 public interface CybufLexer
 {
     char EOF = (char)-1;

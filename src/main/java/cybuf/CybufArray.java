@@ -1,3 +1,4 @@
+package cybuf;
 import java.util.*;
 
 public class CybufArray implements List<Object>

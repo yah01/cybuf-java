@@ -11,9 +11,7 @@ public class MapSerializer implements ObjectSerializer
     @Override
     public void write(Object obj, CybufSerializer serializer) throws InvocationTargetException, IllegalAccessException
     {
-        serializer.writeChar('{');
-        serializer.increaseTab();
-        serializer.writeln();
+        serializer.writeStartCharWithFormat('{');
 
         Map<String,Object> map = (Map) obj;
         Set<Map.Entry<String, Object>> set = map.entrySet();
@@ -28,12 +26,9 @@ public class MapSerializer implements ObjectSerializer
             serializer.write(value);
             if(it.hasNext())
             {
-                serializer.writeln();
+                serializer.writeSeparator();
             }
         }
-
-        serializer.decreaseTab();
-        serializer.writeln();
-        serializer.writeChar('}');
+        serializer.writeEndCharWithFormat('}');
     }
 }

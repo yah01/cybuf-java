@@ -53,7 +53,7 @@ public class CybufTest
     @Test
     public void serialize_java_bean_to_cybuf_string()
     {
-        String result = Cybuf.toCybufString(school);
+        String result = Cybuf.toCybufString(school,true,false,',');
         System.out.println(result);
     }
 

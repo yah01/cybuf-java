@@ -8,9 +8,7 @@ public class ArraySerializer implements ObjectSerializer
     @Override
     public void write(Object obj, CybufSerializer serializer) throws InvocationTargetException, IllegalAccessException
     {
-        serializer.writeChar('[');
-        serializer.increaseTab();
-        serializer.writeln();
+        serializer.writeStartCharWithFormat('[');
 
         Object[] array = (Object[]) obj;
         for(int i=0;i<array.length;++i)
@@ -18,12 +16,10 @@ public class ArraySerializer implements ObjectSerializer
             serializer.write(array[i]);
             if(i != array.length - 1)
             {
-                serializer.writeln();
+                serializer.writeSeparator();
             }
         }
 
-        serializer.decreaseTab();
-        serializer.writeln();
-        serializer.writeChar(']');
+        serializer.writeEndCharWithFormat(']');
     }
 }

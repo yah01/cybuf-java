@@ -12,12 +12,18 @@ public class CybufSerializer
 {
     private final Map<String,ObjectSerializer> serializers;
     private final SerializerWriter writer;
+    private final SerializerConfig config;
 
-    public CybufSerializer()
+    public CybufSerializer(SerializerConfig config)
     {
         writer = new SerializerWriter();
         serializers = new HashMap<>();
+        this.config = config;
         initialSerializers();
+    }
+    public SerializerConfig getSerializerConfig()
+    {
+        return config;
     }
 
     private void initialSerializers()
@@ -79,7 +85,16 @@ public class CybufSerializer
 
     public String toString()
     {
-        return writer.toString();
+        String result = writer.toString();
+        int len = result.length();
+        if(!config.getHasStartBrace())
+        {
+            if(result.startsWith("{"))
+            {
+                result = result.substring(1,len - 1);
+            }
+        }
+        return result.trim();
     }
     public void writeChar(char c)
     {
@@ -98,6 +113,10 @@ public class CybufSerializer
     public void writeFieldName(String fieldName)
     {
         writer.writeFieldName(fieldName);
+        if(!config.getCompressedFormat())
+        {
+            writeChar(' ');
+        }
     }
     public void writeNull()
     {
@@ -120,5 +139,46 @@ public class CybufSerializer
     public void writeBaseObject(Object object)
     {
         writer.writeBaseObject(object);
+    }
+    public char getLastChar()
+    {
+        return writer.getLastChar();
+    }
+    public void writeSeparator()
+    {
+        if(config.getCompressedFormat())
+        {
+            Character ch = getLastChar();
+            if(ch == '\'' || ch == '"' || ch == '}' || ch == ']')
+            {
+                return ;
+            }
+            else
+            {
+                writeChar(config.getSeparator());
+            }
+        }
+        else
+        {
+            writeln();
+        }
+    }
+    public void writeStartCharWithFormat(Character c)
+    {
+        writeChar(c);
+        if(!config.getCompressedFormat())
+        {
+            increaseTab();
+            writeln();
+        }
+    }
+    public void writeEndCharWithFormat(Character c)
+    {
+        if(!config.getCompressedFormat())
+        {
+            decreaseTab();
+            writeln();
+        }
+        writeChar(c);
     }
 }

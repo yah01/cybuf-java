@@ -69,4 +69,21 @@ public class CybufTest
         String result = Cybuf.toCybufString(cybufObject);
         System.out.println(result);
     }
+
+    @Test
+    public void deserialize_invalid_char_in_key()
+    {
+        String text = new String("{\n" +
+                "\tna me: \"mm\"\n" +
+                "}");
+        try
+        {
+            Cybuf.parseObject(text);
+        }
+        catch (CybufException e)
+        {
+            System.out.println(e.getMessage());
+            assertEquals(e.getMessage(),"Invalid char in key");
+        }
+    }
 }

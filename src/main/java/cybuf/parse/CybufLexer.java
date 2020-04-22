@@ -24,6 +24,8 @@ public interface CybufLexer
 
     void skipWhitespace();
 
+    boolean isInvalidKeyChar();
+
     String stringValue();
 
     Integer integerValue();

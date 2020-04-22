@@ -7,15 +7,15 @@ public class CybufScanner implements CybufLexer
     private int               nowPos;
     private int               startPos;
     private int               tokenLength;
-    private int               textLength;
     private char              nowChar;
     private final String      text;
+    private final int         textLength;
     private CybufToken        token;
 
     private final static String TRUE  = "true";
     private final static String FALSE = "false";
 
-    public CybufScanner(String text)
+    public CybufScanner(String text) throws CybufException
     {
         this.text = text;
         this.textLength = text.length();
@@ -56,13 +56,22 @@ public class CybufScanner implements CybufLexer
     @Override
     public void nextKey()
     {
+        if(nowChar == '"')
+        {
+            scanString();
+            return;
+        }
+
         startPos = nowPos;
         tokenLength = 0;
-
         while(nowChar != EOF && nowChar != ':')
         {
             next();
             tokenLength++;
+            if(isInvalidKeyChar())
+            {
+                throw new CybufException("Invalid char in key");
+            }
         }
         if(nowChar == ':')
         {
@@ -335,5 +344,11 @@ public class CybufScanner implements CybufLexer
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean isInvalidKeyChar()
+    {
+        return (nowChar == ' ' || nowChar == '\r' || nowChar == '\n' || nowChar == '\t' || nowChar == '\f' || nowChar == '\b');
     }
 }

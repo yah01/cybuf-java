@@ -32,6 +32,8 @@ public class CybufSerializer
         serializers.put(Object[].class.getName(),ArraySerializer.instance);
         serializers.put(List.class.getName(),ListSerializer.instance);
         serializers.put(Map.class.getName(),MapSerializer.instance);
+        serializers.put(Character.class.getName(),CharSerializer.instance);
+        serializers.put(char.class.getName(),CharSerializer.instance);
         serializers.put("nil",NullSerializer.instance);
     }
 
@@ -87,6 +89,10 @@ public class CybufSerializer
     public void writeString(String value)
     {
         writer.writeString(value);
+    }
+    public void writeCharacter(Character value)
+    {
+        writer.writeCharacter(value);
     }
 
     public void writeFieldName(String fieldName)

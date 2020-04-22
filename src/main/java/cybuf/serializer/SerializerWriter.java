@@ -52,6 +52,18 @@ public class SerializerWriter
         buf[newCount - 1] = '"';
         count = newCount;
     }
+    public void writeCharacter(Character value)
+    {
+        int newCount = count + 3;
+        if(newCount > buf.length)
+        {
+            expandCapacity(newCount);
+        }
+        buf[newCount - 3] = '\'';
+        buf[newCount - 2] = value;
+        buf[newCount - 1] = '\'';
+        count = newCount;
+    }
     public void writeNull()
     {
         int newCount = count + 3;

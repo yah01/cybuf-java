@@ -71,6 +71,16 @@ public class CybufTest
     }
 
     @Test
+    public void serialize_char()
+    {
+        CybufObject cybufObject = new CybufObject();
+        cybufObject.put("name",'s');
+        //System.out.println(cybufObject.get("name").getClass());
+        String result = Cybuf.toCybufString(cybufObject);
+        System.out.println(result);
+    }
+
+    @Test
     public void deserialize_invalid_char_in_key()
     {
         String text = new String("{\n" +

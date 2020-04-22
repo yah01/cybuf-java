@@ -86,4 +86,23 @@ public class CybufTest
             assertEquals(e.getMessage(),"Invalid char in key");
         }
     }
+
+    @Test
+    public void deserialize_nil_value()
+    {
+        String text = new String("{\n" +
+                "\tname: nil\n" +
+                "}");
+        CybufObject cybufObject = Cybuf.parseObject(text);
+        assertNull(cybufObject.get("name"));
+    }
+
+    @Test
+    public void deserialize_char_value()
+    {
+        String text = new String("{\n" +
+                "\tname: 's'\n" +
+                "}");
+        assertEquals(Cybuf.parseObject(text).get("name"),'s');
+    }
 }

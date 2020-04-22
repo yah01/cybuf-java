@@ -24,11 +24,15 @@ public enum CybufToken
 
     LITERAL_STRING,
 
+    LITERAL_CHAR,
+
     IDENTIFIER,
 
     ERROR,
 
     TRUE,
 
-    FALSE
+    FALSE,
+
+    NIL,
 }

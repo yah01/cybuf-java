@@ -9,9 +9,7 @@ public class ListSerializer implements ObjectSerializer
     @Override
     public void write(Object obj, CybufSerializer serializer) throws InvocationTargetException, IllegalAccessException
     {
-        serializer.writeChar('[');
-        serializer.increaseTab();
-        serializer.writeln();
+        serializer.writeStartCharWithFormat('[');
 
         List<Object> list = (List) obj;
         int len = list.size();
@@ -20,12 +18,9 @@ public class ListSerializer implements ObjectSerializer
             serializer.write(list.get(i));
             if(i != len - 1)
             {
-                serializer.writeln();
+                serializer.writeSeparator();
             }
         }
-
-        serializer.decreaseTab();
-        serializer.writeln();
-        serializer.writeChar(']');
+        serializer.writeEndCharWithFormat(']');
     }
 }

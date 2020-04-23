@@ -10,7 +10,7 @@ public class StringSerializer implements ObjectSerializer
     @Override
     public void write(Object obj, CybufSerializer serializer) throws InvocationTargetException, IllegalAccessException
     {
-        if(obj instanceof String)
+        if(obj.getClass() == String.class)
         {
             serializer.writeString((String) obj);
         }

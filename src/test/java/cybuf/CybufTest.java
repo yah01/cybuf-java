@@ -53,7 +53,7 @@ public class CybufTest
     @Test
     public void serialize_java_bean_to_cybuf_string()
     {
-        String result = Cybuf.toCybufString(school);
+        String result = Cybuf.toCybufString(school,true,false,',');
         System.out.println(result);
     }
 
@@ -68,5 +68,51 @@ public class CybufTest
         //System.out.println(cybufObject.get("ok").getClass());
         String result = Cybuf.toCybufString(cybufObject);
         System.out.println(result);
+    }
+
+    @Test
+    public void serialize_char()
+    {
+        CybufObject cybufObject = new CybufObject();
+        cybufObject.put("name",'s');
+        //System.out.println(cybufObject.get("name").getClass());
+        String result = Cybuf.toCybufString(cybufObject);
+        System.out.println(result);
+    }
+
+    @Test
+    public void deserialize_invalid_char_in_key()
+    {
+        String text = new String("{\n" +
+                "\tna me: \"mm\"\n" +
+                "}");
+        try
+        {
+            Cybuf.parseObject(text);
+        }
+        catch (CybufException e)
+        {
+            System.out.println(e.getMessage());
+            assertEquals(e.getMessage(),"Invalid char in key");
+        }
+    }
+
+    @Test
+    public void deserialize_nil_value()
+    {
+        String text = new String("{\n" +
+                "\tname: nil\n" +
+                "}");
+        CybufObject cybufObject = Cybuf.parseObject(text);
+        assertNull(cybufObject.get("name"));
+    }
+
+    @Test
+    public void deserialize_char_value()
+    {
+        String text = new String("{\n" +
+                "\tname: 's'\n" +
+                "}");
+        assertEquals(Cybuf.parseObject(text).get("name"),'s');
     }
 }

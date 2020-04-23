@@ -22,7 +22,13 @@ public interface CybufLexer
 
     void scanFalse();
 
+    void scanNull();
+
+    void scanChar();
+
     void skipWhitespace();
+
+    boolean isInvalidKeyChar();
 
     String stringValue();
 
@@ -32,4 +38,7 @@ public interface CybufLexer
 
     Boolean booleanValue();
 
+    Object nullValue();
+
+    Character charValue();
 }

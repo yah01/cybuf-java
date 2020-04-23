@@ -19,9 +19,7 @@ public class JavaBeanSerializer implements ObjectSerializer
     @Override
     public void write(Object obj, CybufSerializer serializer) throws InvocationTargetException, IllegalAccessException
     {
-        serializer.writeChar('{');
-        serializer.increaseTab();
-        serializer.writeln();
+        serializer.writeStartCharWithFormat('{');
 
         for(int i=0;i<getters.length;++i)
         {
@@ -33,12 +31,9 @@ public class JavaBeanSerializer implements ObjectSerializer
 
             if(i != getters.length - 1)
             {
-                serializer.writeln();
+                serializer.writeSeparator();
             }
         }
-
-        serializer.decreaseTab();
-        serializer.writeln();
-        serializer.writeChar('}');
+        serializer.writeEndCharWithFormat('}');
     }
 }

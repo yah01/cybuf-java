@@ -1,5 +1,7 @@
 package cybuf.serializer;
 
+import cybuf.CybufException;
+
 public class SerializerWriter
 {
     private char[]      buf;
@@ -28,14 +30,13 @@ public class SerializerWriter
     public void writeFieldName(String fieldName)
     {
         int len = fieldName.length();
-        int newCount = count + len + 2;
+        int newCount = count + len + 1;
         if(newCount > buf.length)
         {
             expandCapacity(newCount);
         }
         fieldName.getChars(0,len,buf,count);
-        buf[newCount - 2] = ':';
-        buf[newCount - 1] = ' ';
+        buf[newCount - 1] = ':';
         count = newCount;
     }
     public void writeString(String value)
@@ -50,6 +51,18 @@ public class SerializerWriter
         buf[count] = '"';
         value.getChars(0,len,buf,start);
         buf[newCount - 1] = '"';
+        count = newCount;
+    }
+    public void writeCharacter(Character value)
+    {
+        int newCount = count + 3;
+        if(newCount > buf.length)
+        {
+            expandCapacity(newCount);
+        }
+        buf[newCount - 3] = '\'';
+        buf[newCount - 2] = value;
+        buf[newCount - 1] = '\'';
         count = newCount;
     }
     public void writeNull()
@@ -107,6 +120,18 @@ public class SerializerWriter
     public String toString()
     {
         return new String(buf,0,count);
+    }
+
+    public char getLastChar()
+    {
+        if(count > 0)
+        {
+            return buf[count - 1];
+        }
+        else
+        {
+            throw new CybufException("empty buf");
+        }
     }
 
 }

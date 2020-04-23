@@ -7,15 +7,16 @@ public class CybufScanner implements CybufLexer
     private int               nowPos;
     private int               startPos;
     private int               tokenLength;
-    private int               textLength;
     private char              nowChar;
     private final String      text;
+    private final int         textLength;
     private CybufToken        token;
 
     private final static String TRUE  = "true";
     private final static String FALSE = "false";
+    private final static String NIL   = "nil";
 
-    public CybufScanner(String text)
+    public CybufScanner(String text) throws CybufException
     {
         this.text = text;
         this.textLength = text.length();
@@ -56,13 +57,22 @@ public class CybufScanner implements CybufLexer
     @Override
     public void nextKey()
     {
+        if(nowChar == '"')
+        {
+            scanString();
+            return;
+        }
+
         startPos = nowPos;
         tokenLength = 0;
-
         while(nowChar != EOF && nowChar != ':')
         {
             next();
             tokenLength++;
+            if(isInvalidKeyChar())
+            {
+                throw new CybufException("Invalid char in key");
+            }
         }
         if(nowChar == ':')
         {
@@ -84,6 +94,11 @@ public class CybufScanner implements CybufLexer
                 scanString();
                 return ;
             }
+            if(nowChar == '\'')
+            {
+                scanChar();
+                return ;
+            }
             if(nowChar >= '0' && nowChar <= '9')
             {
                 scanNumber();
@@ -103,6 +118,11 @@ public class CybufScanner implements CybufLexer
             {
                 scanFalse();
                 return;
+            }
+            if(nowChar == 'n')
+            {
+                scanNull();
+                return ;
             }
             switch(nowChar)
             {
@@ -153,6 +173,31 @@ public class CybufScanner implements CybufLexer
     public char getCurrent()
     {
         return nowChar;
+    }
+
+    @Override
+    public void scanNull()
+    {
+        for(int i=0;i<3;++i)
+        {
+            if(nowChar == NIL.charAt(i))
+            {
+                next();
+            }
+            else
+            {
+                throw new CybufException("error parse nil");
+            }
+        }
+        if (nowChar == ' ' || nowChar == '}' || nowChar == ']' || nowChar == '\n' || nowChar == '\r'
+                || nowChar == '\t' || nowChar == '\f' || nowChar == '\b' )
+        {
+            token = CybufToken.NIL;
+        }
+        else
+        {
+            throw new CybufException("scan nil error");
+        }
     }
 
     @Override
@@ -279,6 +324,25 @@ public class CybufScanner implements CybufLexer
     }
 
     @Override
+    public void scanChar()
+    {
+        startPos = nowPos + 1;
+        tokenLength = 0;
+        next();
+        tokenLength++;
+        next();
+        if(nowChar != '\'')
+        {
+            throw new CybufException("should be single char in single quote");
+        }
+        else
+        {
+            next();
+            token = CybufToken.LITERAL_CHAR;
+        }
+    }
+
+    @Override
     public String stringValue()
     {
         return text.substring(startPos,startPos + tokenLength);
@@ -322,6 +386,18 @@ public class CybufScanner implements CybufLexer
     }
 
     @Override
+    public Object nullValue()
+    {
+        return null;
+    }
+
+    @Override
+    public Character charValue()
+    {
+        return text.charAt(startPos);
+    }
+
+    @Override
     public void skipWhitespace()
     {
         for(;;)
@@ -335,5 +411,11 @@ public class CybufScanner implements CybufLexer
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean isInvalidKeyChar()
+    {
+        return (nowChar == ' ' || nowChar == '\r' || nowChar == '\n' || nowChar == '\t' || nowChar == '\f' || nowChar == '\b');
     }
 }

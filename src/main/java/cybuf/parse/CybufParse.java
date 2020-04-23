@@ -1,5 +1,6 @@
 package cybuf.parse;
 
+import cybuf.Cybuf;
 import cybuf.CybufArray;
 import cybuf.CybufException;
 import cybuf.CybufObject;
@@ -54,6 +55,10 @@ public class CybufParse
                 case IDENTIFIER:
                     key = scanner.stringValue();
                     key = key.trim();
+                    if(key.length() <= 0)
+                    {
+                        throw new CybufException("Invalid key length");
+                    }
                     scanner.nextValue();
                     break;
                 case ERROR:
@@ -78,14 +83,19 @@ public class CybufParse
                 case LITERAL_STRING:
                     value = scanner.stringValue();
                     break;
+                case LITERAL_CHAR:
+                    value = scanner.charValue();
+                    break;
                 case TRUE:
                 case FALSE:
                     value = scanner.booleanValue();
                     break;
+                case NIL:
+                    value = scanner.nullValue();
+                    break;
                 default:
                     throw new CybufException("Undefined value type " + scanner.token());
             }
-
 
             map.put(key,value);
         }

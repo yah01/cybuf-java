@@ -402,7 +402,7 @@ public class CybufScanner implements CybufLexer
     {
         for(;;)
         {
-            if (nowChar == ' ' || nowChar == '\r' || nowChar == '\n' || nowChar == '\t' || nowChar == '\f' || nowChar == '\b')
+            if (Character.isWhitespace(nowChar))
             {
                 next();
             }
@@ -416,6 +416,6 @@ public class CybufScanner implements CybufLexer
     @Override
     public boolean isInvalidKeyChar()
     {
-        return (nowChar == ' ' || nowChar == '\r' || nowChar == '\n' || nowChar == '\t' || nowChar == '\f' || nowChar == '\b');
+        return Character.isWhitespace(nowChar);
     }
 }

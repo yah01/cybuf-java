@@ -19,14 +19,14 @@ public class Cybuf
 
     public static String toCybufString(Object object,Boolean compressedFormat,Boolean hasStartBrace)
     {
-        return toCybufString(object,compressedFormat,hasStartBrace,' ');
+        return toCybufString(object,compressedFormat,hasStartBrace,SerializerConfig.SPACE);
     }
 
-    public static String toCybufString(Object object,Boolean compressedFormat,Boolean hasStartBrace,Character separator)
+    public static String toCybufString(Object object,Boolean compressedFormat,Boolean hasStartBrace,Integer separator)
     {
         if(!compressedFormat)
         {
-            separator = ' ';
+            separator = SerializerConfig.SPACE;
         }
         SerializerConfig config = new SerializerConfig(compressedFormat,hasStartBrace,separator);
         CybufSerializer serializer = new CybufSerializer(config);

@@ -1,5 +1,6 @@
 package cybuf;
 
+import cybuf.serializer.SerializerConfig;
 import object.Person;
 import object.School;
 import org.junit.BeforeClass;
@@ -53,7 +54,7 @@ public class CybufTest
     @Test
     public void serialize_java_bean_to_cybuf_string()
     {
-        String result = Cybuf.toCybufString(school,true,false,',');
+        String result = Cybuf.toCybufString(school,false,true, SerializerConfig.NEWLINE);
         System.out.println(result);
     }
 

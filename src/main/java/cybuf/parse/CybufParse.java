@@ -4,19 +4,21 @@ import cybuf.Cybuf;
 import cybuf.CybufArray;
 import cybuf.CybufException;
 import cybuf.CybufObject;
+import cybuf.parse.deserializer.CybufDeserializer;
+import cybuf.parse.deserializer.ObjectDeserializer;
 
 import java.util.List;
 import java.util.Map;
 
 public class CybufParse
 {
-    private final String          text;
-    private final CybufScanner    scanner;
+    private final String                text;
+    private final CybufScanner          scanner;
 
     public CybufParse(String text)
     {
-        this.text    = text;
-        this.scanner = new CybufScanner(text);
+        this.text               = text;
+        this.scanner            = new CybufScanner(text);
     }
 
     public Object parse()
@@ -133,6 +135,16 @@ public class CybufParse
                 case LITERAL_STRING:
                     value = scanner.stringValue();
                     break;
+                case LITERAL_CHAR:
+                    value = scanner.charValue();
+                    break;
+                case TRUE:
+                case FALSE:
+                    value = scanner.booleanValue();
+                    break;
+                case NIL:
+                    value = scanner.nullValue();
+                    break;
                 case RBRACE:
                     throw new CybufException("Unclosing CybufArray");
                 default:
@@ -141,4 +153,12 @@ public class CybufParse
             list.add(value);
         }
     }
+
+    public <T> T parseObject(Class<T> clazz)
+    {
+        CybufDeserializer deserializer = new CybufDeserializer();
+        Object obj = parse();
+        return (T) deserializer.deserialize(obj,clazz);
+    }
+
 }

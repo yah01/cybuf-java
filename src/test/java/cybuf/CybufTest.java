@@ -116,4 +116,12 @@ public class CybufTest
                 "}");
         assertEquals(Cybuf.parseObject(text).get("name"),'s');
     }
+
+    @Test
+    public void deserialize_array_object_to_cybufArray()
+    {
+        String text = new String("[[nil 2 3][1 2 3]]");
+        CybufArray array = Cybuf.parseArray(text);
+        System.out.println(array);
+    }
 }

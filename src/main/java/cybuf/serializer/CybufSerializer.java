@@ -1,7 +1,6 @@
 package cybuf.serializer;
 
-import cybuf.CybufException;
-import cybuf.util.JavaBeanSerializerCreator;
+import cybuf.util.Creator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -77,7 +76,7 @@ public class CybufSerializer
         }
         else
         {
-            ObjectSerializer os = JavaBeanSerializerCreator.createJavaBeanSerializer(clazz);
+            ObjectSerializer os = Creator.createJavaBeanSerializer(clazz);
             serializers.put(clazz.getName(),os);
             return os;
         }

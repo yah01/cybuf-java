@@ -26,6 +26,12 @@ public class FieldInfo
         return method.invoke(obj);
     }
 
+    public Object setObjectFieldValue(Object obj, Object...args) throws InvocationTargetException, IllegalAccessException
+    {
+        return method.invoke(obj, args);
+    }
+
+
     public String getFieldName()
     {
         return fieldName;

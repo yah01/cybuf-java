@@ -124,4 +124,13 @@ public class CybufTest
         CybufArray array = Cybuf.parseArray(text);
         System.out.println(array);
     }
+
+    @Test
+    public void type_test()
+    {
+        char s = 's';
+
+        System.out.println(Character.TYPE);
+
+    }
 }

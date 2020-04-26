@@ -2,6 +2,7 @@ package cybuf.parse.deserializer;
 
 import cybuf.CybufArray;
 import cybuf.CybufException;
+import cybuf.CybufObject;
 import cybuf.util.Creator;
 
 import java.util.HashMap;
@@ -34,20 +35,43 @@ public class CybufDeserializer
     }
     public <T> T deserialize(Object obj,Class<T> clazz)
     {
+        final ObjectDeserializer od;
         if(obj.getClass() == CybufArray.class)
         {
-            if(!List.class.isAssignableFrom(clazz) || !clazz.isArray())
+            if(!List.class.isAssignableFrom(clazz) && !clazz.isArray())
             {
-                throw new CybufException("can not deserialize to this class");
+                throw new CybufException("can only deserialize to list or array");
             }
-            CybufArray array = (CybufArray) obj;
+            if(clazz == CybufArray.class)
+            {
+                return (T) obj;
+            }
             if(clazz.isArray())
             {
-
+                od = deserializers.get(Object[].class.getName());
             }
-
+            else
+            {
+                od = getObjectDeserializer(List.class);
+            }
         }
-        return null;
+        else if(obj.getClass() == CybufObject.class)
+        {
+            if(clazz == CybufObject.class)
+            {
+                return (T) obj;
+            }
+            if(List.class.isAssignableFrom(clazz) || clazz.isArray())
+            {
+                throw new CybufException("can not deserialize to list or array");
+            }
+            od = getObjectDeserializer(clazz);
+        }
+        else
+        {
+            od = getObjectDeserializer(clazz);
+        }
+        return (T) od.deserialize(obj,this);
     }
 
     public ObjectDeserializer getObjectDeserializer(Class<?> clazz)

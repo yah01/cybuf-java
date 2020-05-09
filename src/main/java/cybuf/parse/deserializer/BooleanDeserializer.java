@@ -6,13 +6,15 @@ public class BooleanDeserializer implements ObjectDeserializer
 {
     public final static BooleanDeserializer instance = new BooleanDeserializer();
     @Override
-    public Object deserialize(Object object, CybufDeserializer deserializer)
+    public <T> Object deserialize(Object object, CybufDeserializer deserializer,Class<T> clazz)
     {
-        if(object.getClass() != Boolean.class && object.getClass() != Boolean.TYPE)
+        try
         {
-            throw new CybufException("class type error");
+            return (T) object;
         }
-        assert object instanceof Boolean;
-        return (Boolean) object;
+        catch(Exception e)
+        {
+            throw new CybufException("BooleanDeserializer error, " + e.getMessage());
+        }
     }
 }

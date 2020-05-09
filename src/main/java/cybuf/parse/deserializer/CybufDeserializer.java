@@ -11,13 +11,8 @@ import java.util.Map;
 
 public class CybufDeserializer
 {
-    private final Map<String,ObjectDeserializer> deserializers;
-    public CybufDeserializer()
-    {
-        deserializers = new HashMap<>();
-        initialDeserializers();
-    }
-    private void initialDeserializers()
+    private final static Map<String,ObjectDeserializer> deserializers = new HashMap<>();
+    static
     {
         deserializers.put(String.class.getName(), StringDeserializer.instance);
         deserializers.put(Integer.class.getName(), IntegerDeserializer.instance);
@@ -36,7 +31,11 @@ public class CybufDeserializer
     public <T> T deserialize(Object obj,Class<T> clazz)
     {
         final ObjectDeserializer od;
-        if(obj.getClass() == CybufArray.class)
+        if(obj == null)
+        {
+            od = deserializers.get("nil");
+        }
+        else if(obj.getClass() == CybufArray.class)
         {
             if(!List.class.isAssignableFrom(clazz) && !clazz.isArray())
             {
@@ -71,7 +70,7 @@ public class CybufDeserializer
         {
             od = getObjectDeserializer(clazz);
         }
-        return (T) od.deserialize(obj,this);
+        return (T) od.deserialize(obj,this,clazz);
     }
 
     public ObjectDeserializer getObjectDeserializer(Class<?> clazz)

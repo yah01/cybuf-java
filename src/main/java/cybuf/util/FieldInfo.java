@@ -9,7 +9,7 @@ public class FieldInfo
     private final String    fieldName;
     private final Field     field;
     private final Method    method;
-    private final Class<?>  declaringClass;
+    private final Class<?>  declaringClass;//所属的类
     private final Class<?>  fieldClass;
 
     public FieldInfo(String fieldName,Field field,Method method,Class<?> declaringClass)
@@ -18,7 +18,7 @@ public class FieldInfo
         this.field               = field;
         this.method              = method;
         this.declaringClass      = declaringClass;
-        this.fieldClass          = field.getClass();
+        this.fieldClass          = field.getType();
     }
 
     public Object getObjectFieldValue(Object obj) throws InvocationTargetException, IllegalAccessException
@@ -30,10 +30,13 @@ public class FieldInfo
     {
         return method.invoke(obj, args);
     }
-
-
     public String getFieldName()
     {
         return fieldName;
     }
+    public Class<?> getFieldClass()
+    {
+        return fieldClass;
+    }
+
 }

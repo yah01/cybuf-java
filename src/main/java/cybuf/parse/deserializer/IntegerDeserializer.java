@@ -6,13 +6,15 @@ public class IntegerDeserializer implements ObjectDeserializer
 {
     public final static IntegerDeserializer instance = new IntegerDeserializer();
     @Override
-    public Object deserialize(Object object, CybufDeserializer deserializer)
+    public <T> Object deserialize(Object object, CybufDeserializer deserializer,Class<T> clazz)
     {
-        if(object.getClass() != Integer.class && object.getClass() != Integer.TYPE)
+        try
         {
-            throw new CybufException("class type error");
+            return Integer.valueOf(object.toString());
         }
-        assert object instanceof Integer;
-        return (Integer) object;
+        catch (Exception e)
+        {
+            throw new CybufException("IntegerDeserializer error, " + e.getMessage());
+        }
     }
 }

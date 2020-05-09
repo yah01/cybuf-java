@@ -6,13 +6,15 @@ public class DoubleDeserializer implements ObjectDeserializer
 {
     public final static DoubleDeserializer instance = new DoubleDeserializer();
     @Override
-    public Object deserialize(Object object, CybufDeserializer deserializer)
+    public <T> Object deserialize(Object object, CybufDeserializer deserializer,Class<T> clazz)
     {
-        if(object.getClass() != Double.class && object.getClass() != Double.TYPE)
+        try
         {
-            throw new CybufException("class type error");
+            return Double.valueOf(object.toString());
         }
-        assert object instanceof Double;
-        return (Double) object;
+        catch(Exception e)
+        {
+            throw new CybufException("DoubleDeserializer error, " + e.getMessage());
+        }
     }
 }

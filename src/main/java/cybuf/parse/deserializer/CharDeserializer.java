@@ -6,13 +6,20 @@ public class CharDeserializer implements ObjectDeserializer
 {
     public final static CharDeserializer instance = new CharDeserializer();
     @Override
-    public Object deserialize(Object object, CybufDeserializer deserializer)
+    public <T> Object deserialize(Object object, CybufDeserializer deserializer,Class<T> clazz)
     {
-        if(object.getClass() != Character.class && object.getClass() != Character.TYPE)
+        String objectString = object.toString();
+        if(objectString.length() > 1)
         {
-            throw new CybufException("class type error");
+            throw new CybufException("CharDeserializer error, not char type");
         }
-        assert object instanceof Character;
-        return (Character) object;
+        try
+        {
+            return objectString.charAt(0);
+        }
+        catch (Exception e)
+        {
+            throw new CybufException("CharDeserializer error, " + e.getMessage());
+        }
     }
 }

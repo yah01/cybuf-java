@@ -9,23 +9,21 @@ import java.util.Map;
 
 public class CybufSerializer
 {
-    private final Map<String,ObjectSerializer> serializers;
+    private final static Map<String,ObjectSerializer> serializers = new HashMap<>();
     private final SerializerWriter writer;
     private final SerializerConfig config;
 
     public CybufSerializer(SerializerConfig config)
     {
         writer = new SerializerWriter();
-        serializers = new HashMap<>();
         this.config = config;
-        initialSerializers();
     }
     public SerializerConfig getSerializerConfig()
     {
         return config;
     }
 
-    private void initialSerializers()
+    static
     {
         serializers.put(String.class.getName(),StringSerializer.instance);
         serializers.put(Integer.class.getName(),IntegerSerializer.instance);

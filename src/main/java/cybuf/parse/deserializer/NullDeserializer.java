@@ -4,7 +4,7 @@ public class NullDeserializer implements ObjectDeserializer
 {
     public final static NullDeserializer instance = new NullDeserializer();
     @Override
-    public Object deserialize(Object object, CybufDeserializer deserializer)
+    public <T> Object deserialize(Object object, CybufDeserializer deserializer,Class<T> clazz)
     {
         return null;
     }

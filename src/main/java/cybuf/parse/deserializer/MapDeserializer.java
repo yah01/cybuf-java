@@ -4,7 +4,7 @@ public class MapDeserializer implements ObjectDeserializer
 {
     public final static MapDeserializer instance = new MapDeserializer();
     @Override
-    public Object deserialize(Object object, CybufDeserializer deserializer)
+    public <T> Object deserialize(Object object, CybufDeserializer deserializer,Class<T> clazz)
     {
         return null;
     }

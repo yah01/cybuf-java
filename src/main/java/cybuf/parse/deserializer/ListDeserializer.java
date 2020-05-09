@@ -4,7 +4,7 @@ public class ListDeserializer implements  ObjectDeserializer
 {
     public final static ListDeserializer instance = new ListDeserializer();
     @Override
-    public Object deserialize(Object object, CybufDeserializer deserializer)
+    public <T> Object deserialize(Object object, CybufDeserializer deserializer,Class<T> clazz)
     {
         return null;
     }

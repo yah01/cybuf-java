@@ -10,10 +10,10 @@ public class ArrayListTest
     {
         return a.toString();
     }
-//    public ArrayList<Integer> getA()
-//    {
-//        return a;
-//    }
+    public ArrayList<Integer> getA()
+    {
+        return a;
+    }
 
     public void setA(ArrayList<Integer> a)
     {

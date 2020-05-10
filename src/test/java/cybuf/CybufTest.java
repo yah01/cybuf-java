@@ -58,23 +58,10 @@ public class CybufTest
     public void serialize_java_bean_to_cybuf_string()
     {
         String result = Cybuf.toCybufString(school,false,true, SerializerConfig.NEWLINE);
-        //System.out.println(result);
+        System.out.println(result);
 
-        CybufObject cybufObject = Cybuf.parseObject(result);
-
-        for(Map.Entry<String,Object> entry : cybufObject.entrySet())
-        {
-            Object tmp = entry.getValue();
-            if(tmp == null)
-            {
-                System.out.println("class null");
-            }
-            else
-            {
-                System.out.println(entry.getValue().getClass());
-            }
-        }
-        System.out.println(cybufObject);
+        School s1 = Cybuf.parseObject(result,School.class);
+        System.out.println(s1);
     }
 
     @Test
@@ -184,6 +171,21 @@ public class CybufTest
 
         arrayTest = Cybuf.parseObject(result,ArrayTest.class);
         System.out.println(arrayTest);
+    }
+    @Test
+    public void deserialize_to_arraylist()
+    {
+        ArrayListTest arrayListTest = new ArrayListTest();
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayListTest.setA (arrayList);
+
+        String result = Cybuf.toCybufString(arrayListTest);
+        System.out.println(result);
+
+        ArrayListTest a = Cybuf.parseObject(result,ArrayListTest.class);
+        System.out.println(a);
     }
 
     @Test

@@ -36,10 +36,7 @@ public class Cybuf
         {
             serializer.write(object);
             return serializer.toString();
-        } catch (InvocationTargetException e)
-        {
-            throw new CybufException(e.getMessage());
-        } catch (IllegalAccessException e)
+        } catch (InvocationTargetException | IllegalAccessException e)
         {
             throw new CybufException(e.getMessage());
         }

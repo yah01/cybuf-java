@@ -5,6 +5,9 @@ import cybuf.CybufException;
 import cybuf.CybufObject;
 import cybuf.util.Creator;
 
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +31,25 @@ public class CybufDeserializer
         deserializers.put(char.class.getName(),CharDeserializer.instance);
         deserializers.put("nil",NullDeserializer.instance);
     }
-    public <T> T deserialize(Object obj,Class<T> clazz)
+    public Object deserialize(Object obj, Type type)
     {
         final ObjectDeserializer od;
+        boolean isParameterizedType = type instanceof ParameterizedType;
+        boolean isGenericArrayType = type instanceof GenericArrayType;
+        if(isGenericArrayType)
+        {
+            throw  new CybufException("not support GenericArrayType");
+        }
+        Class<?> clazz;
+        if(isParameterizedType)
+        {
+            clazz = (Class<?>)((ParameterizedType)type).getRawType();
+        }
+        else
+        {
+            clazz = (Class<?>) type;
+        }
+
         if(obj == null)
         {
             od = deserializers.get("nil");
@@ -43,11 +62,11 @@ public class CybufDeserializer
             }
             if(clazz == CybufArray.class)
             {
-                return (T) obj;
+                return obj;
             }
             if(clazz.isArray())
             {
-                od = deserializers.get(Object[].class.getName());
+                od = getObjectDeserializer(Object[].class);
             }
             else
             {
@@ -58,7 +77,7 @@ public class CybufDeserializer
         {
             if(clazz == CybufObject.class)
             {
-                return (T) obj;
+                return obj;
             }
             if(List.class.isAssignableFrom(clazz) || clazz.isArray())
             {
@@ -70,7 +89,7 @@ public class CybufDeserializer
         {
             od = getObjectDeserializer(clazz);
         }
-        return (T) od.deserialize(obj,this,clazz);
+        return od.deserialize(obj,this,type);
     }
 
     public ObjectDeserializer getObjectDeserializer(Class<?> clazz)

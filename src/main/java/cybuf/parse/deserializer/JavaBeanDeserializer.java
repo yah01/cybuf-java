@@ -7,6 +7,8 @@ import cybuf.util.FieldInfo;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,7 +22,7 @@ public class JavaBeanDeserializer implements ObjectDeserializer
         this.beanInfo = beanInfo;
     }
     @Override
-    public <T> Object deserialize(Object object, CybufDeserializer deserializer,Class<T> clazz)
+    public Object deserialize(Object object, CybufDeserializer deserializer, Type type)
     {
         if(object.getClass() != CybufObject.class)
         {
@@ -35,6 +37,15 @@ public class JavaBeanDeserializer implements ObjectDeserializer
         }
         try
         {
+            Class<?> clazz;
+            if(type instanceof ParameterizedType)
+            {
+                throw new CybufException("not support ParameterizedType class");
+            }
+            else
+            {
+                clazz = (Class<?>) type;
+            }
             Object newInstance = clazz.getConstructor().newInstance();
             for(Map.Entry<String,Object> entry : cybufObject.entrySet())
             {
@@ -42,7 +53,7 @@ public class JavaBeanDeserializer implements ObjectDeserializer
                 if(setters.containsKey(fieldName))
                 {
                     FieldInfo fieldInfo = setters.get(fieldName);
-                    Object value = deserializer.deserialize(entry.getValue(),fieldInfo.getFieldClass());
+                    Object value = deserializer.deserialize(entry.getValue(),fieldInfo.getGenericType());
                     fieldInfo.setObjectFieldValue(newInstance,value);
                     setters.remove(fieldName);
                 }

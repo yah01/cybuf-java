@@ -3,6 +3,7 @@ package cybuf.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 public class FieldInfo
 {
@@ -10,7 +11,6 @@ public class FieldInfo
     private final Field     field;
     private final Method    method;
     private final Class<?>  declaringClass;//所属的类
-    private final Class<?>  fieldClass;
 
     public FieldInfo(String fieldName,Field field,Method method,Class<?> declaringClass)
     {
@@ -18,7 +18,6 @@ public class FieldInfo
         this.field               = field;
         this.method              = method;
         this.declaringClass      = declaringClass;
-        this.fieldClass          = field.getType();
     }
 
     public Object getObjectFieldValue(Object obj) throws InvocationTargetException, IllegalAccessException
@@ -34,9 +33,12 @@ public class FieldInfo
     {
         return fieldName;
     }
-    public Class<?> getFieldClass()
+    public Class<?> getType()
     {
-        return fieldClass;
+        return field.getType();
     }
-
+    public Type getGenericType()
+    {
+        return field.getGenericType();
+    }
 }

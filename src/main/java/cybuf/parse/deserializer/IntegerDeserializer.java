@@ -2,11 +2,13 @@ package cybuf.parse.deserializer;
 
 import cybuf.CybufException;
 
+import java.lang.reflect.Type;
+
 public class IntegerDeserializer implements ObjectDeserializer
 {
     public final static IntegerDeserializer instance = new IntegerDeserializer();
     @Override
-    public <T> Object deserialize(Object object, CybufDeserializer deserializer,Class<T> clazz)
+    public Object deserialize(Object object, CybufDeserializer deserializer, Type type)
     {
         try
         {

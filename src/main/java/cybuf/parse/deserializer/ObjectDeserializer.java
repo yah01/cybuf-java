@@ -1,6 +1,8 @@
 package cybuf.parse.deserializer;
 
+import java.lang.reflect.Type;
+
 public interface ObjectDeserializer
 {
-    <T> Object deserialize(Object object,CybufDeserializer deserializer,Class<T> clazz);
+    Object deserialize(Object object, CybufDeserializer deserializer, Type type);
 }

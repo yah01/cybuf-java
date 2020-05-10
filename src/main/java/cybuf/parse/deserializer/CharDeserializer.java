@@ -2,11 +2,13 @@ package cybuf.parse.deserializer;
 
 import cybuf.CybufException;
 
+import java.lang.reflect.Type;
+
 public class CharDeserializer implements ObjectDeserializer
 {
     public final static CharDeserializer instance = new CharDeserializer();
     @Override
-    public <T> Object deserialize(Object object, CybufDeserializer deserializer,Class<T> clazz)
+    public Object deserialize(Object object, CybufDeserializer deserializer, Type type)
     {
         String objectString = object.toString();
         if(objectString.length() > 1)

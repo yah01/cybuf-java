@@ -1,6 +1,7 @@
 package object;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class School
 {
@@ -12,6 +13,20 @@ public class School
     Person[] students;
     Person header;
     Object nil;
+
+    public String toString()
+    {
+        return "{" +
+                "name: " + name +
+                ",age: " + age +
+                ",area: " + area +
+                ",open: " + open +
+                ",teachers: " + teachers +
+                ",students: " + Arrays.asList(students) +
+                ",header: " + header +
+                ",nil: nil" +
+                "}";
+    }
 
     public String getName()
     {

@@ -1,7 +1,6 @@
 package cybuf.serializer;
 
-import cybuf.CybufException;
-import cybuf.util.JavaBeanSerializerCreator;
+import cybuf.util.Creator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -10,23 +9,21 @@ import java.util.Map;
 
 public class CybufSerializer
 {
-    private final Map<String,ObjectSerializer> serializers;
+    private final static Map<String,ObjectSerializer> serializers = new HashMap<>();
     private final SerializerWriter writer;
     private final SerializerConfig config;
 
     public CybufSerializer(SerializerConfig config)
     {
         writer = new SerializerWriter();
-        serializers = new HashMap<>();
         this.config = config;
-        initialSerializers();
     }
     public SerializerConfig getSerializerConfig()
     {
         return config;
     }
 
-    private void initialSerializers()
+    static
     {
         serializers.put(String.class.getName(),StringSerializer.instance);
         serializers.put(Integer.class.getName(),IntegerSerializer.instance);
@@ -77,7 +74,7 @@ public class CybufSerializer
         }
         else
         {
-            ObjectSerializer os = JavaBeanSerializerCreator.createJavaBeanSerializer(clazz);
+            ObjectSerializer os = Creator.createJavaBeanSerializer(clazz);
             serializers.put(clazz.getName(),os);
             return os;
         }

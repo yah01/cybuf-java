@@ -46,4 +46,9 @@ public class Person
     {
         this.height = height;
     }
+
+    public String toString()
+    {
+        return "{name: " + name + ",age: " + age + ",ok: " + ok + ",height: " + height + "}";
+    }
 }

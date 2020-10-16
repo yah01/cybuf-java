@@ -17,6 +17,12 @@
             <!-- 不设置scope就是全局
             <scope>object</scope>   -->
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.56</version>
+        </dependency>
     </dependencies>
     
 </project>

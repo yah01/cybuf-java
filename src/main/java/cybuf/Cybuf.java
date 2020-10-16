@@ -1,9 +1,11 @@
 package cybuf;
 import cybuf.parse.CybufParse;
+import cybuf.parse.deserializer.CybufDeserializer;
 import cybuf.serializer.CybufSerializer;
 import cybuf.serializer.SerializerConfig;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public class Cybuf
 {
@@ -19,14 +21,14 @@ public class Cybuf
 
     public static String toCybufString(Object object,Boolean compressedFormat,Boolean hasStartBrace)
     {
-        return toCybufString(object,compressedFormat,hasStartBrace,' ');
+        return toCybufString(object,compressedFormat,hasStartBrace,SerializerConfig.SPACE);
     }
 
-    public static String toCybufString(Object object,Boolean compressedFormat,Boolean hasStartBrace,Character separator)
+    public static String toCybufString(Object object,Boolean compressedFormat,Boolean hasStartBrace,Integer separator)
     {
         if(!compressedFormat)
         {
-            separator = ' ';
+            separator = SerializerConfig.NEWLINE;
         }
         SerializerConfig config = new SerializerConfig(compressedFormat,hasStartBrace,separator);
         CybufSerializer serializer = new CybufSerializer(config);
@@ -34,10 +36,7 @@ public class Cybuf
         {
             serializer.write(object);
             return serializer.toString();
-        } catch (InvocationTargetException e)
-        {
-            throw new CybufException(e.getMessage());
-        } catch (IllegalAccessException e)
+        } catch (InvocationTargetException | IllegalAccessException e)
         {
             throw new CybufException(e.getMessage());
         }
@@ -61,7 +60,18 @@ public class Cybuf
 
     public static <T> T parseObject(String text,Class<T> clazz)
     {
-        return null;
+        Object cybufObject;
+        if(clazz.isArray() || List.class.isAssignableFrom(clazz))
+        {
+            cybufObject = (CybufArray) parseArray(text);
+        }
+        else
+        {
+            cybufObject = (CybufObject) parseObject(text);
+        }
+        CybufDeserializer deserializer = new CybufDeserializer();
+        Object object = deserializer.deserialize(cybufObject,clazz);
+        return (T) object;
     }
 
 }

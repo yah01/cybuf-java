@@ -1,5 +1,9 @@
 package cybuf;
 
+import com.alibaba.fastjson.JSON;
+import cybuf.serializer.SerializerConfig;
+import object.ArrayListTest;
+import object.ArrayTest;
 import object.Person;
 import object.School;
 import org.junit.BeforeClass;
@@ -53,8 +57,11 @@ public class CybufTest
     @Test
     public void serialize_java_bean_to_cybuf_string()
     {
-        String result = Cybuf.toCybufString(school,true,false,',');
+        String result = Cybuf.toCybufString(school,false,true, SerializerConfig.NEWLINE);
         System.out.println(result);
+
+        School s1 = Cybuf.parseObject(result,School.class);
+        System.out.println(s1);
     }
 
     @Test
@@ -114,5 +121,86 @@ public class CybufTest
                 "\tname: 's'\n" +
                 "}");
         assertEquals(Cybuf.parseObject(text).get("name"),'s');
+    }
+
+    @Test
+    public void deserialize_array_object_to_cybufArray()
+    {
+        String text = new String("[[nil 2 3][1 2 3]]");
+        CybufArray array = Cybuf.parseArray(text);
+        System.out.println(array);
+    }
+
+    @Test
+    public void type_test()
+    {
+        char s = 's';
+
+        System.out.println(Character.TYPE);
+    }
+
+    @Test
+    public void deserialize_to_javabean()
+    {
+        String text = new String("{\n" +
+                "\tname: \"tcg\"\n" +
+                "\tage: 10\n" +
+                "\tok: true\n" +
+                "\theight: 180\n" +
+                "}");
+        Person person = Cybuf.parseObject(text,Person.class);
+        System.out.println(person);
+    }
+
+    @Test
+    public void deserialize_to_array()
+    {
+        ArrayTest arrayTest = new ArrayTest();
+        Integer[][] a = new Integer[4][4];
+        for(int i=0;i<a.length;++i)
+        {
+            for(int j=0;j<a[i].length;++j)
+            {
+                a[i][j] = i;
+            }
+
+        }
+        arrayTest.setA(a);
+        String result = Cybuf.toCybufString(arrayTest,true,true,SerializerConfig.SPACE);
+        System.out.println(result);
+
+        arrayTest = Cybuf.parseObject(result,ArrayTest.class);
+        System.out.println(arrayTest);
+    }
+    @Test
+    public void deserialize_to_arraylist()
+    {
+        ArrayListTest arrayListTest = new ArrayListTest();
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayListTest.setA (arrayList);
+
+        String result = Cybuf.toCybufString(arrayListTest);
+        System.out.println(result);
+
+        ArrayListTest a = Cybuf.parseObject(result,ArrayListTest.class);
+        System.out.println(a);
+    }
+
+    @Test
+    public void JSON_test()
+    {
+//        ArrayListTest arrayListTest = new ArrayListTest();
+//        ArrayList<Integer> arrayList = new ArrayList<>();
+//        arrayList.add(1);
+//        arrayList.add(2);
+//        arrayListTest.a = (arrayList);
+//        String result = JSON.toJSONString(arrayListTest);
+//        System.out.println(result);
+
+        String result = "{\"a\":[1,2]}";
+        ArrayListTest school1 = JSON.parseObject(result,ArrayListTest.class);
+        System.out.println(school1);
     }
 }
